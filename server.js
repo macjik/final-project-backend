@@ -9,6 +9,8 @@ app.get("/", (req, res) => {
   res.send("Wagwan G");
 });
 
+console.log('bro')
+
 // // Import the functions you need from the SDKs you need
 // import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
