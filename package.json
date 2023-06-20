@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/macjik/final-project-backend/issues"
   },
-  "homepage": "https://github.com/macjik/final-project-backend#server.js",
+  "homepage": "https://localhost:3001",
   "dependencies": {
     "cors": "^2.8.5"
   }
