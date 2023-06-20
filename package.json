@@ -1,5 +1,4 @@
 {
-  "homepage": "http://localhost:3001",
   "name": "backend",
   "version": "1.0.0",
   "description": "",
@@ -17,5 +16,5 @@
   "bugs": {
     "url": "https://github.com/macjik/final-project-backend/issues"
   },
-  "homepage": "https://github.com/macjik/final-project-backend#readme"
+  "homepage": "https://github.com/macjik/final-project-backend#server.js"
 }
