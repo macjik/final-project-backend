@@ -17,11 +17,14 @@ app.get("/", (req, res) => {
 
 console.log("bro");
 
-mongoose.connect(process.env.MONGO_DB, {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  process.env.MONGO_DB,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  console.log("connected to db")
+);
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -36,4 +39,4 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model("Users", UserSchema);
 
-module.exports = User;
+module.exports = app;
