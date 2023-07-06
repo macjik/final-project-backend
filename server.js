@@ -46,5 +46,6 @@ const user = new User({
   age: 45,
 });
 user.save();
+console.log(user)
 
 module.exports = app;
