@@ -46,9 +46,8 @@ const user = new User({
 
 app.get("/", async (req, res) => {
   try {
-    res.send("Wagwan G");
     console.log(req);
-    console.log(user);
+    res.json(req);
     await user.save();
   } catch (error) {
     if (error.code === 11000) {
