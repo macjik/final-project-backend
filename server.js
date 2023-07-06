@@ -50,6 +50,7 @@ app.get("/", async (req, res) => {
     await user.save();
     res.send(user);
     console.log(user);
+    console.log(req)
   } catch (error) {
     if (error.code === 11000) {
       console.log("Duplicate name found. Ignoring the error.");
@@ -59,8 +60,8 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("http://localhost:3000/register", (req, res) => {
-  console.log(req);
-});
+// app.get("http://localhost:3000/register", (req, res) => {
+//   console.log(req);
+// });
 
 module.exports = app;
