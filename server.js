@@ -59,4 +59,8 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.get("/", (req, res) => {
+  console.log(req);
+});
+
 module.exports = app;
