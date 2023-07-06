@@ -46,11 +46,10 @@ const user = new User({
 
 app.get("/", async (req, res) => {
   try {
-    // res.send("Wagwan G");
+    res.send("Wagwan G");
     await user.save();
-    res.send(user);
     console.log(user);
-    console.log(req)
+    console.log(req);
   } catch (error) {
     if (error.code === 11000) {
       console.log("Duplicate name found. Ignoring the error.");
