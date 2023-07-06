@@ -13,10 +13,6 @@ app.listen(PORT, () => {
   console.log("yehhh");
 });
 
-app.get("/", (req, res) => {
-  res.send("Wagwan G");
-});
-
 console.log("bro");
 
 mongoose
@@ -48,9 +44,11 @@ const user = new User({
   age: 45,
 });
 
-const storeData = async () => {
+app.get("/", async (req, res) => {
   try {
+    // res.send("Wagwan G");
     await user.save();
+    res.send(user);
     console.log(user);
   } catch (error) {
     if (error.code === 11000) {
@@ -59,7 +57,6 @@ const storeData = async () => {
       console.log("An error occurred while saving the user:", error);
     }
   }
-};
-storeData();
+});
 
 module.exports = app;
