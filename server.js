@@ -47,9 +47,9 @@ const user = new User({
 app.get("/", async (req, res) => {
   try {
     res.send("Wagwan G");
-    await user.save();
-    console.log(user);
     console.log(req);
+    console.log(user);
+    await user.save();
   } catch (error) {
     if (error.code === 11000) {
       console.log("Duplicate name found. Ignoring the error.");
