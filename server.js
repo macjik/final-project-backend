@@ -19,14 +19,13 @@ app.get("/", (req, res) => {
 
 console.log("bro");
 
-mongoose.connect(
-  process.env.MONGO_DB,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-  console.log("connected to db")
-);
+mongoose 
+ .connect(process.env.MONGO_DB, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,   })   
+ .then(() => console.log("Database connected!"))
+ .catch(err => console.log(err));
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -46,6 +45,6 @@ const user = new User({
   age: 45,
 });
 user.save();
-console.log(user)
+console.log(user);
 
 module.exports = app;
