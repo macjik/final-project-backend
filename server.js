@@ -19,18 +19,19 @@ app.get("/", (req, res) => {
 
 console.log("bro");
 
-mongoose 
- .connect(process.env.MONGO_DB, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,   })   
- .then(() => console.log("Database connected!"))
- .catch(err => console.log(err));
+mongoose
+  .connect(process.env.MONGO_DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Database connected!"))
+  .catch((err) => console.log(err));
 
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   age: {
     type: Number,
@@ -38,13 +39,27 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+UserSchema.index({ name: 1 }, { unique: true });
+
 const User = mongoose.model("Users", UserSchema);
 
 const user = new User({
   name: "aka",
   age: 45,
 });
-user.save();
-console.log(user);
+
+const storeData = async () => {
+  try {
+    await user.save();
+    console.log(user);
+  } catch (error) {
+    if (error.code === 11000) {
+      console.log("Duplicate name found. Ignoring the error.");
+    } else {
+      console.log("An error occurred while saving the user:", error);
+    }
+  }
+};
+storeData();
 
 module.exports = app;
