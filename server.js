@@ -41,4 +41,10 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model("Users", UserSchema);
 
+const user = new User({
+  name: "aka",
+  age: 45,
+});
+user.save();
+
 module.exports = app;
