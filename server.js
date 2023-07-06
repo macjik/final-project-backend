@@ -59,7 +59,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
+app.get("http://localhost:3000/register", (req, res) => {
   console.log(req);
 });
 
