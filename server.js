@@ -25,7 +25,6 @@ const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    default: 0,
   },
   password: {
     type: String,
@@ -56,6 +55,7 @@ app.post("/", async (req, res) => {
       console.log("An error occurred while saving the user:", error);
     }
   }
+  console.log(user)
 });
 
 // app.get("http://localhost:3000/register", (req, res) => {
