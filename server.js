@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-UserSchema.index({ name: 1 }, { unique: true });
+UserSchema.index({ username: 1 }, { unique: true });
 
 const User = mongoose.model("Users", UserSchema);
 
