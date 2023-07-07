@@ -33,25 +33,26 @@ UserSchema.index({ name: 1 }, { unique: true });
 
 const User = mongoose.model("Users", UserSchema);
 
-const user = new User({
-  name: "aka",
-  age: 45,
-});
-
-app.post("/", (req, res) => {
+app.post("/", async (req, res) => {
   // res.send("ass");
   res.send(req.body);
   console.log(req.body);
 
-  // try {
-  //   await user.save();
-  // } catch (error) {
-  //   if (error.code === 11000) {
-  //     console.log("Duplicate name found. Ignoring the error.");
-  //   } else {
-  //     console.log("An error occurred while saving the user:", error);
-  //   }
-  // }
+  const user = new User({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+  });
+
+  try {
+    await user.save();
+  } catch (error) {
+    if (error.code === 11000) {
+      console.log("Duplicate name found. Ignoring the error.");
+    } else {
+      console.log("An error occurred while saving the user:", error);
+    }
+  }
 });
 
 // app.get("http://localhost:3000/register", (req, res) => {
