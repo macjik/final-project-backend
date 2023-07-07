@@ -39,9 +39,9 @@ app.post("/", async (req, res) => {
   console.log(req.body);
 
   const user = new User({
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password,
+    username: req.body.userData.username,
+    email: req.body.userData.email,
+    password: req.body.userData.password,
   });
 
   try {
