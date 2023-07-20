@@ -37,6 +37,22 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model("Users", UserSchema);
 
+const usersDB = async () => {
+  try {
+    const users = await User.find({});
+    console.log(users);
+    return users;
+    // users.forEach((user) => {
+    //   console.log(user.username);
+    //   console.log(user.email);
+    //   console.log(user.password);
+    //   // Log other fields here
+    // });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // UserSchema.index({ username: 1 }, { unique: true });
 app.post(
   "/",
@@ -114,6 +130,104 @@ app.post("/login", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+const authMiddleware = (req, res, next) => {
+  const token = req.cookies.token; // Get the token from the cookie
+
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, "your_secret_key"); // Verify the token using your secret key
+    req.currentUser = decoded; // Set the current user in the request object
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+};
+
+app.get("/login", authMiddleware, (req, res) => {
+  const currentUser = req.currentUser;
+  // Use the currentUser object to access the user information
+  res.json(currentUser);
+});
+
+const collectionSchema = new mongoose.Schema({
+  title: String,
+  description: String,
+  topic: String,
+  content: { String },
+  author: String,
+  authorID: mongoose.Schema.Types.ObjectId,
+  createdAt: String,
+  id: { type: String, unique: true },
+});
+
+const collections = mongoose.model("Collection", collectionSchema);
+
+app.post("/collection", async (req, res) => {
+  try {
+    usersDB()
+      .then(async (users) => {
+        const usersMap = users.filter(
+          (user) =>
+            user.username === req.body.storedCollection.author.userData.username
+        );
+        console.log(`The matching user is ${usersMap}`);
+        console.log(usersMap[0]._id);
+
+        const COLLECTIONS = new collections({
+          title: req.body.storedCollection.title,
+          description: req.body.storedCollection.description,
+          topic: req.body.storedCollection.topic,
+          content: req.body.storedCollection.content,
+          author: usersMap[0].username,
+          authorID: usersMap[0]._id,
+          createdAt: req.body.storedCollection.createdAt,
+          id: req.body.storedCollection.id,
+        });
+        console.log(COLLECTIONS);
+        await COLLECTIONS.save();
+      })
+      .catch((err) => console.error(`Someting you expected`, err));
+
+    // console.log(req.body.storedCollection.author.userData);
+    res.status(200).json({
+      message: `Data received successfully`,
+      data: req.body,
+    });
+  } catch (error) {
+    console.error("Error processing data:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while processing the data" });
+  }
+});
+
+const collectionsDB = async () => {
+  try {
+    const COLLECTIONS = await collections.find({});
+    console.log(COLLECTIONS);
+    return COLLECTIONS;
+  } catch (err) {
+    console.error(`error in the function`);
+    return err;
+  }
+};
+collectionsDB();
+
+app.post("/home-collections", async (req, res) => {
+  try {
+    const collections = await collectionsDB();
+    res.status(200).json(collections);
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: "An error occurred while retrieving the collections" });
   }
 });
 
