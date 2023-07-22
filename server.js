@@ -42,18 +42,11 @@ const usersDB = async () => {
     const users = await User.find({});
     console.log(users);
     return users;
-    // users.forEach((user) => {
-    //   console.log(user.username);
-    //   console.log(user.email);
-    //   console.log(user.password);
-    //   // Log other fields here
-    // });
   } catch (err) {
     console.error(err);
   }
 };
 
-// UserSchema.index({ username: 1 }, { unique: true });
 app.post(
   "/",
   [
@@ -66,8 +59,6 @@ app.post(
       .withMessage("Password must be at least 6 characters long"),
   ],
   async (req, res) => {
-    // res.send("ass");
-    // res.send(req.body);
     console.log(req.body);
 
     const user = new User({
@@ -119,10 +110,10 @@ app.post("/login", async (req, res) => {
       "Set-Cookie",
       cookie.serialize("token", token, {
         httpOnly: true,
-        secure: true, // Set to true if using HTTPS
+        secure: true,
         sameSite: "strict",
         maxAge: 10604800, // Expiration time in seconds (7 days)
-        path: "http://localhost:3000/login", // Adjust the path if needed
+        path: "https://final-project-backend-or53.onrender.com/login",
       })
     );
 
@@ -141,8 +132,8 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, "your_secret_key"); // Verify the token using your secret key
-    req.currentUser = decoded; // Set the current user in the request object
+    const decoded = jwt.verify(token, "your_secret_key");
+    req.currentUser = decoded;
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });
@@ -151,7 +142,6 @@ const authMiddleware = (req, res, next) => {
 
 app.get("/login", authMiddleware, (req, res) => {
   const currentUser = req.currentUser;
-  // Use the currentUser object to access the user information
   res.json(currentUser);
 });
 
@@ -194,7 +184,6 @@ app.post("/collection", async (req, res) => {
       })
       .catch((err) => console.error(`Someting you expected`, err));
 
-    // console.log(req.body.storedCollection.author.userData);
     res.status(200).json({
       message: `Data received successfully`,
       data: req.body,
