@@ -105,7 +105,6 @@ app.post("/login", async (req, res) => {
 
     const token = jwt.sign(payload, secretKey, { expiresIn });
 
-    // Set the token as a cookie
     res.setHeader(
       "Set-Cookie",
       cookie.serialize("token", token, {
@@ -125,7 +124,7 @@ app.post("/login", async (req, res) => {
 });
 
 const authMiddleware = (req, res, next) => {
-  const token = req.cookies.token; // Get the token from the cookie
+  const token = req.cookies.token;
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized" });
