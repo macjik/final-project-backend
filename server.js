@@ -171,10 +171,7 @@ app.post("/collection", async (req, res) => {
       })
       .catch((err) => console.error(`Someting you expected`, err));
 
-    res.status(200).json({
-      message: `Data received successfully`,
-      data: req.body,
-    });
+    res.status(200).json(req.body);
   } catch (error) {
     console.error("Error processing data:", error);
     res
@@ -206,6 +203,8 @@ app.post("/home-collections", async (req, res) => {
       .json({ error: "An error occurred while retrieving the collections" });
   }
 });
+
+console.log(collections);
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
