@@ -47,39 +47,27 @@ const usersDB = async () => {
   }
 };
 
-app.post(
-  "/",
-  [
-    body("userData.username").notEmpty().withMessage("Username is required"),
-    body("userData.email").isEmail().withMessage("Invalid email address"),
-    body("userData.password")
-      .notEmpty()
-      .withMessage("Password is required")
-      .isLength({ min: 6 })
-      .withMessage("Password must be at least 6 characters long"),
-  ],
-  async (req, res) => {
-    console.log(req.body);
+app.post("/", async (req, res) => {
+  console.log(req.body);
 
-    const user = new User({
-      username: req.body.userData.username,
-      email: req.body.userData.email,
-      password: await bcrypt.hash(req.body.userData.password, 10),
-    });
+  const user = new User({
+    username: req.body.userData.username,
+    email: req.body.userData.email,
+    password: await bcrypt.hash(req.body.userData.password, 10),
+  });
 
-    try {
-      await user.save();
-      res.send(user);
-    } catch (error) {
-      if (error.code === 11000) {
-        return res.status(400).send("Duplicate name found");
-      } else {
-        return res.status(500).send("An error occurred while saving the user");
-      }
+  try {
+    await user.save();
+    res.send(user);
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).send("Duplicate name found");
+    } else {
+      return res.status(500).send("An error occurred while saving the user");
     }
-    console.log(user);
   }
-);
+  console.log(user);
+});
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body.userData;
