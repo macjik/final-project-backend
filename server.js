@@ -7,6 +7,7 @@ const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookie = require("cookie");
+const multer = require("multer");
 
 const PORT = 3120;
 
@@ -204,10 +205,35 @@ app.post("/home-collections", async (req, res) => {
   }
 });
 
-app.post('/imageUpload', async (req, res) => {
-  console.log(req.body)
-  await res.send(req.body)
-})
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Specify the directory where the images will be saved
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(
+      null,
+      file.fieldname +
+        "-" +
+        uniqueSuffix +
+        "." +
+        file.originalname.split(".").pop()
+    );
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.post("/imageUpload", upload.single("content"), (req, res) => {
+  try {
+    const imageUrl = req.file.path;
+    console.log(imageUrl);
+    res.json({ imageUrl });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Image upload failed" });
+  }
+});
 
 console.log(collections);
 
