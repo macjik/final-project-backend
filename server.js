@@ -205,6 +205,7 @@ app.post("/home-collections", async (req, res) => {
 });
 
 app.post('/imageUpload', async (req, res) => {
+  console.log(req.body)
   await res.send(req.body)
 })
 
