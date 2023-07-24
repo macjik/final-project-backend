@@ -204,6 +204,10 @@ app.post("/home-collections", async (req, res) => {
   }
 });
 
+app.post('/imageUpload', async (req, res) => {
+  await res.send(req.body)
+})
+
 console.log(collections);
 
 app.listen(PORT, () => {
