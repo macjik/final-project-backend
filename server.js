@@ -207,7 +207,7 @@ app.post("/home-collections", async (req, res) => {
 
 const upload = multer({ dest: "uploads/" });
 
-app.post("/upload", upload.single("image"), (req, res) => {
+app.post("/upload", upload.single("content"), (req, res) => {
   const file = req.file;
 
   res.json({ imageUrl: `/uploads/${file.filename}` });
