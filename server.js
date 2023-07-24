@@ -169,7 +169,7 @@ app.post("/collection", async (req, res) => {
         console.log(COLLECTIONS);
         await COLLECTIONS.save();
       })
-      .catch((err) => console.error(`Someting you expected`, err));
+      .catch((err) => console.error("Someting you expected", err));
 
     res.status(200).json(req.body);
   } catch (error) {
