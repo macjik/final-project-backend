@@ -136,7 +136,7 @@ const collectionSchema = new mongoose.Schema({
   title: String,
   description: String,
   topic: String,
-  content: { String },
+  content: String,
   author: String,
   authorID: mongoose.Schema.Types.ObjectId,
   createdAt: String,
