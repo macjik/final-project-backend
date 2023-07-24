@@ -210,7 +210,7 @@ const upload = multer({ dest: "uploads/" });
 app.post("/upload", upload.single("image"), (req, res) => {
   const file = req.file;
 
-  res.json(`{ imageUrl: /uploads/${file.filename} }`);
+  res.json({ imageUrl: `/uploads/${file.filename}` });
 });
 
 app.listen(3000, () => {
