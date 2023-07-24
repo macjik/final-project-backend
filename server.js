@@ -210,6 +210,10 @@ const upload = multer({ dest: "uploads/" });
 app.post("/upload", upload.single("content"), (req, res) => {
   const file = req.file;
 
+  if (!file) {
+    return res.json({ error: "Content is empty" });
+  }
+
   res.json({ imageUrl: `/uploads/${file.filename}` });
 });
 
