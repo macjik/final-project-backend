@@ -161,7 +161,7 @@ app.post("/collection", async (req, res) => {
           title: req.body.storedCollection.title,
           description: req.body.storedCollection.description,
           topic: req.body.storedCollection.topic,
-          content: req.body.storedCollection.content || [],
+          content: req.body.storedCollection.content,
           author: usersMap[0].username,
           authorID: usersMap[0]._id,
           createdAt: req.body.storedCollection.createdAt,
