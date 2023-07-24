@@ -7,6 +7,7 @@ const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookie = require("cookie");
+const multer = require("multer");
 
 const PORT = 3120;
 
@@ -204,12 +205,17 @@ app.post("/home-collections", async (req, res) => {
   }
 });
 
-// app.post('/imageUpload', async (req, res) => {
-//   console.log(req.body)
-//   await res.send(req.body)
-// })
+const upload = multer({ dest: "uploads/" });
 
-console.log(collections);
+app.post("/upload", upload.single("image"), (req, res) => {
+  const file = req.file;
+
+  res.json(`{ imageUrl: /uploads/${file.filename} }`);
+});
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
