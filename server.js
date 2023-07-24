@@ -215,7 +215,7 @@ app.post("/upload", upload.single("content"), (req, res) => {
   }
 
   res.json({
-    imageUrl: `/https://final-project-backend-or53.onrender.com/upload/${file.filename}`,
+    imageUrl: `https://final-project-backend-or53.onrender.com/upload/${file.filename}`,
   });
 });
 
