@@ -217,6 +217,14 @@ app.post("/upload", upload.single("content"), (req, res) => {
 
   // Read the uploaded file as a readable stream
   const fileStream = fs.createReadStream(`uploads/${file.path}`);
+
+  // Set the appropriate headers for streaming the image
+  res.set({
+    "Content-Type": file.mimetype,
+    "Content-Length": file.size,
+  });
+
+  // Pipe the readable stream to the response object
   fileStream.pipe(res);
 });
 app.listen(3000, () => {
