@@ -215,6 +215,10 @@ app.post("/home-collections", async (req, res) => {
 const upload = multer({ dest: "upload/" });
 
 app.get("/upload/:imageUrl", (req, res) => {
+  if (!file) {
+    return res.json({ message: "Empty" });
+  }
+
   const imageUrl = req.params.imageUrl;
   const readStream = fs.createReadStream(`upload/${imageUrl}`);
   readStream.pipe(res);
