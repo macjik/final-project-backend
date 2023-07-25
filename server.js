@@ -237,7 +237,9 @@ app.post("/upload", upload.single("content"), (req, res) => {
     if (!file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
-    const imageUrl = "https://localhost:3000/uploads/" + file.filename; 
+    const imageUrl =
+      "https://final-project-backend-or53.onrender.com/uploads/" +
+      file.filename;
 
     return res.status(200).json(imageUrl);
   } catch (error) {
