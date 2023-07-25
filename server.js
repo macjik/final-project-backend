@@ -216,8 +216,8 @@ const upload = multer({ dest: "upload/" });
 
 app.get("/upload/:imageUrl", (req, res) => {
   const imageUrl = req.params.imageUrl;
-  
-  if (!file) {
+
+  if (!imageUrl) {
     return res.json({ message: "Empty" });
   }
   const readStream = fs.createReadStream(`upload/${imageUrl}`);
