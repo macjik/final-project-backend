@@ -212,38 +212,19 @@ app.post("/home-collections", async (req, res) => {
   }
 });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(
-      null,
-      file.fieldname +
-        "-" +
-        uniqueSuffix +
-        "." +
-        file.originalname.split(".").pop()
-    );
-  },
+const upload = multer({ dest: "upload/" });
+
+app.get("/upload/:imageUrl", (req, res) => {
+  const imageUrl = req.params.imageUrl;
+  const readStream = fs.createReadStream(`upload/${imageUrl}`);
+  readStream.pipe(res);
 });
 
-const upload = multer({ storage: storage });
-
 app.post("/upload", upload.single("content"), (req, res) => {
-  try {
-    const file = req.file;
-    if (!file) {
-      return res.json({ message: "No file uploaded" });
-    }
-    const imageUrl = "/uploads/" + file.filename;
+  const imageUrl = req.file.filename;
 
-    return res.status(200).json(imageUrl);
-  } catch (error) {
-    console.error(`doesn not work`);
-    return res.status(500).json({ message: "Server error" });
-  }
+  console.log(imageUrl);
+  res.send({ imageUrl });
 });
 
 app.listen(PORT, () => {
