@@ -220,7 +220,7 @@ app.get("/upload/:imageUrl", (req, res) => {
   readStream.pipe(res);
 });
 
-app.post("/upload", upload.single("content"), (req, res) => {
+app.post("/api/upload", upload.single("content"), (req, res) => {
   const imageUrl = req.file.filename;
 
   console.log(imageUrl);
