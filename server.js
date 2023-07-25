@@ -221,9 +221,10 @@ app.get("/upload/:imageUrl", (req, res) => {
   const imageUrl = req.params.imageUrl;
   if (!imageUrl) {
     res.status(400).send("Image URL is empty");
+  } else {
+    const readStream = fs.createReadStream(`upload/${imageUrl}`);
+    readStream.pipe(res);
   }
-  const readStream = fs.createReadStream(`upload/${imageUrl}`);
-  readStream.pipe(res);
 });
 
 app.post("/api/upload", upload.single("content"), (req, res) => {
