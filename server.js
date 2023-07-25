@@ -6,8 +6,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookie = require("cookie");
-const multer = require("multer");
-const fs = require("fs");
+const Busboy = require('busboy');
 
 const PORT = 3120;
 
@@ -212,39 +211,21 @@ app.post("/home-collections", async (req, res) => {
   }
 });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(
-      null,
-      file.fieldname +
-        "-" +
-        uniqueSuffix +
-        "." +
-        file.originalname.split(".").pop()
-    );
-  },
+app.post('/upload', (req, res) => {
+  const busboy = new Busboy({ headers: req.headers });
+
+  busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+    const saveTo = path.join(__dirname, 'uploads', filename);
+    file.pipe(fs.createWriteStream(saveTo));
+  });
+
+  busboy.on('finish', () => {
+    res.status(200).send('File uploaded successfully');
+  });
+
+  req.pipe(busboy);
 });
 
-const upload = multer({ storage: storage });
-
-app.post("/upload", upload.single("content"), (req, res) => {
-  try {
-    const file = req.file;
-    if (!file) {
-      return res.json({ message: "No file uploaded" });
-    }
-    const imageUrl = "/uploads/" + file.filename;
-
-    return res.status(200).json(imageUrl);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error" });
-  }
-});
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);

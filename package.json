@@ -20,6 +20,7 @@
   "homepage": "https://final-project-backend-or53.onrender.com",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "busboy": "^1.6.0",
     "cookie": "^0.5.0",
     "cookies": "^0.8.0",
     "cors": "^2.8.5",
