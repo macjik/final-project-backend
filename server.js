@@ -14,12 +14,12 @@ const PORT = 3120;
 app.use(express.json());
 app.use(cors());
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
 mongoose
   .connect(process.env.MONGO_DB, {
@@ -212,24 +212,38 @@ app.post("/home-collections", async (req, res) => {
   }
 });
 
-const upload = multer({ dest: "uploads/" });
-// app.use("/uploads", express.static("uploads"));
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(
+      null,
+      file.fieldname +
+        "-" +
+        uniqueSuffix +
+        "." +
+        file.originalname.split(".").pop()
+    );
+  },
+});
+
+const upload = multer({ storage: storage });
 
 app.post("/upload", upload.single("content"), (req, res) => {
-  const file = req.file;
+  try {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    const imageUrl = "https://localhost:3000/uploads/" + file.filename; 
 
-  if (!file) {
-    return res.json({ error: "Content is empty" });
+    return res.status(200).json(imageUrl);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
   }
-
-  const fileStream = fs.createReadStream(`uploads/${file.path}`);
-
-  res.set({
-    "Content-Type": file.mimetype,
-    "Content-Length": file.size,
-  });
-
-  fileStream.pipe(res);
 });
 
 app.listen(PORT, () => {
