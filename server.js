@@ -241,7 +241,7 @@ app.post("/upload", upload.single("content"), (req, res) => {
 
     return res.status(200).json(imageUrl);
   } catch (error) {
-    console.error(error);
+    console.error(`doesn not work`);
     return res.status(500).json({ message: "Server error" });
   }
 });
