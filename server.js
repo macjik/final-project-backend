@@ -6,8 +6,8 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookie = require("cookie");
-const multer = require("multer");
-const fs = require("fs");
+// const multer = require("multer");
+// const fs = require("fs");
 
 const PORT = 3120;
 
@@ -215,23 +215,23 @@ app.post("/home-collections", async (req, res) => {
   }
 });
 
-const upload = multer({ dest: "upload/" });
+// const upload = multer({ dest: "upload/" });
 
-app.get("/upload/:imageUrl", (req, res) => {
-  const imageUrl = req.params.imageUrl;
-  if (!imageUrl) {
-    res.status(400).send("Image URL is empty");
-  } else {
-    const readStream = fs.createReadStream(`upload/${imageUrl}`);
-    readStream.pipe(res);
-  }
-});
+// app.get("/upload/:imageUrl", (req, res) => {
+//   const imageUrl = req.params.imageUrl;
+//   if (!imageUrl) {
+//     res.status(400).send("Image URL is empty");
+//   } else {
+//     const readStream = fs.createReadStream(`upload/${imageUrl}`);
+//     readStream.pipe(res);
+//   }
+// });
 
-app.post("/api/upload", upload.single("content"), (req, res) => {
-  const imageUrl = req.file.filename;
-  console.log(imageUrl);
-  res.send({ imageUrl });
-});
+// app.post("/api/upload", upload.single("content"), (req, res) => {
+//   const imageUrl = req.file.filename;
+//   console.log(imageUrl);
+//   res.send({ imageUrl });
+// });
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
