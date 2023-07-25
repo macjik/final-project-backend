@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookie = require("cookie");
@@ -12,8 +11,14 @@ const fs = require("fs");
 
 const PORT = 3120;
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 
 mongoose
   .connect(process.env.MONGO_DB, {
@@ -207,7 +212,7 @@ app.post("/home-collections", async (req, res) => {
 });
 
 const upload = multer({ dest: "uploads/" });
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 
 app.post("/upload", upload.single("content"), (req, res) => {
   const file = req.file;
@@ -218,13 +223,14 @@ app.post("/upload", upload.single("content"), (req, res) => {
 
   const fileStream = fs.createReadStream(`uploads/${file.path}`);
 
-  // res.set({
-  //   "Content-Type": file.mimetype,
-  //   "Content-Length": file.size,
-  // });
+  res.set({
+    "Content-Type": file.mimetype,
+    "Content-Length": file.size,
+  });
 
   fileStream.pipe(res);
 });
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
