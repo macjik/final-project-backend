@@ -214,7 +214,7 @@ app.post("/home-collections", async (req, res) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "upload/");
+    cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -237,9 +237,7 @@ app.post("/upload", upload.single("content"), (req, res) => {
     if (!file) {
       return res.json({ message: "No file uploaded" });
     }
-    const imageUrl =
-      "upload/" +
-      file.filename;
+    const imageUrl = "/uploads/" + file.filename;
 
     return res.status(200).json(imageUrl);
   } catch (error) {
