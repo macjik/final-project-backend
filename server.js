@@ -214,9 +214,7 @@ app.post("/upload", upload.single("content"), (req, res) => {
     return res.json({ error: "Content is empty" });
   }
 
-  res.json({
-    imageUrl: `https://final-project-backend-or53.onrender.com/upload/${file.filename}`,
-  });
+  res.json({ imageUrl: `https://final-project-backend-or53.onrender.com/upload/${file.filename}` });
 });
 
 app.listen(3000, () => {
