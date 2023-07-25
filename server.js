@@ -235,10 +235,10 @@ app.post("/upload", upload.single("content"), (req, res) => {
   try {
     const file = req.file;
     if (!file) {
-      return res.status(400).json({ message: "No file uploaded" });
+      return res.json({ message: "No file uploaded" });
     }
     const imageUrl =
-      "https://final-project-backend-or53.onrender.com/uploads/" +
+      "upload/" +
       file.filename;
 
     return res.status(200).json(imageUrl);
