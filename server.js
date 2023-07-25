@@ -207,6 +207,7 @@ app.post("/home-collections", async (req, res) => {
 });
 
 const upload = multer({ dest: "uploads/" });
+app.use("/uploads", express.static("uploads"));
 
 app.post("/upload", upload.single("content"), (req, res) => {
   const file = req.file;
@@ -215,16 +216,13 @@ app.post("/upload", upload.single("content"), (req, res) => {
     return res.json({ error: "Content is empty" });
   }
 
-  // Read the uploaded file as a readable stream
   const fileStream = fs.createReadStream(`uploads/${file.path}`);
 
-  // Set the appropriate headers for streaming the image
-  res.set({
-    "Content-Type": file.mimetype,
-    "Content-Length": file.size,
-  });
+  // res.set({
+  //   "Content-Type": file.mimetype,
+  //   "Content-Length": file.size,
+  // });
 
-  // Pipe the readable stream to the response object
   fileStream.pipe(res);
 });
 app.listen(3000, () => {
