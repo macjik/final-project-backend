@@ -16,8 +16,11 @@ app.use(cors());
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   next();
 });
 
@@ -218,18 +221,16 @@ app.get("/upload/:imageUrl", (req, res) => {
   const imageUrl = req.params.imageUrl;
   if (!imageUrl) {
     res.status(400).send("Image URL is empty");
-    return;
   }
   const readStream = fs.createReadStream(`upload/${imageUrl}`);
   readStream.pipe(res);
 });
 
 app.post("/api/upload", upload.single("content"), (req, res) => {
-  const imageUrl = req.file ? req.file.filename : "";
+  const imageUrl = req.file.filename;
   console.log(imageUrl);
   res.send({ imageUrl });
 });
-
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
