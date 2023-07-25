@@ -214,9 +214,18 @@ app.post("/upload", upload.single("content"), (req, res) => {
     return res.json({ error: "Content is empty" });
   }
 
-  res.json({ imageUrl: `https://final-project-backend-or53.onrender.com/upload/${file.filename}` });
-});
+  // Read the uploaded file as a readable stream
+  const fileStream = fs.createReadStream(file.path);
 
+  // Set the appropriate headers for streaming the image
+  res.set({
+    "Content-Type": file.mimetype,
+    "Content-Length": file.size,
+  });
+
+  // Pipe the readable stream to the response object
+  fileStream.pipe(res);
+});
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
