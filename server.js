@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookie = require("cookie");
 const multer = require("multer");
+const fs = require('fs');
 
 const PORT = 3120;
 
