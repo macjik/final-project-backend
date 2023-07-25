@@ -216,9 +216,9 @@ const upload = multer({ dest: "upload/" });
 
 app.get("/upload/:imageUrl", (req, res) => {
   const imageUrl = req.params.imageUrl;
-
   if (!imageUrl) {
-    return res.json({ message: "Empty" });
+    res.status(400).send("Image URL is empty");
+    return;
   }
   const readStream = fs.createReadStream(`upload/${imageUrl}`);
   readStream.pipe(res);
@@ -226,10 +226,10 @@ app.get("/upload/:imageUrl", (req, res) => {
 
 app.post("/api/upload", upload.single("content"), (req, res) => {
   const imageUrl = req.file ? req.file.filename : "";
-
   console.log(imageUrl);
   res.send({ imageUrl });
 });
+
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
