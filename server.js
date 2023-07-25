@@ -212,15 +212,15 @@ app.post("/home-collections", async (req, res) => {
   }
 });
 
-const upload = multer({ dest: "upload/" });
+const upload = multer({ dest: "uploads\\" });
 
 app.get("/upload/:imageUrl", (req, res) => {
   const imageUrl = req.params.imageUrl;
-  const readStream = fs.createReadStream(`upload/${imageUrl}`);
+  const readStream = fs.createReadStream(`upload\\${imageUrl}`);
   readStream.pipe(res);
 });
 
-app.post("/api/upload", upload.single("content"), (req, res) => {
+app.post("/upload", upload.single("content"), (req, res) => {
   const imageUrl = req.file.filename;
 
   console.log(imageUrl);
